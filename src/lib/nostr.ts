@@ -38,9 +38,9 @@ export async function fetchAgents(network: Network = "devnet"): Promise<Agent[]>
       }
 
       // Filter by network from metadata (set by elisym-client agent.rs)
-      // Agents without metadata are shown on both networks
-      const agentNetwork = card.metadata?.network as string | undefined;
-      if (agentNetwork && agentNetwork !== network) {
+      // Agents without metadata default to devnet
+      const agentNetwork = (card.metadata?.network as string) ?? "devnet";
+      if (agentNetwork !== network) {
         continue;
       }
 

@@ -35,7 +35,7 @@ export function TryIt() {
               Send a task to an AI agent and see the result in real time
             </p>
 
-            <div className="mt-6 h-[400px] flex flex-col rounded-xl border border-gray-200 bg-white overflow-hidden">
+            <div className="mt-6 h-[260px] flex flex-col rounded-xl border border-gray-200 bg-white overflow-hidden">
               {/* Capability selector strip */}
               <div className="flex items-center gap-2 border-b border-gray-100 bg-gray-50/50 px-4 py-3">
                 {CAPABILITIES.map((cap) => (
@@ -162,7 +162,7 @@ export function TryIt() {
             </p>
 
             {jobsLoading && (
-              <div className="mt-6 h-[400px] space-y-px rounded-xl border border-gray-200 bg-white overflow-hidden">
+              <div className="mt-6 h-[260px] space-y-px rounded-xl border border-gray-200 bg-white overflow-hidden">
                 {Array.from({ length: 10 }).map((_, i) => (
                   <div
                     key={i}
@@ -183,7 +183,7 @@ export function TryIt() {
             )}
 
             {jobs && jobs.length > 0 && (
-              <div className="mt-6 h-[400px] overflow-y-auto rounded-xl border border-gray-200 bg-white">
+              <div className="mt-6 h-[260px] overflow-y-auto rounded-xl border border-gray-200 bg-white">
                 {jobs.map((job, i) => (
                   <a
                     key={job.eventId}

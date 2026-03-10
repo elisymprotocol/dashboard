@@ -39,7 +39,7 @@ export function AgentList() {
         )}
 
         {agents && agents.length > 0 && (
-          <div className="mt-6 grid max-h-[520px] grid-cols-1 gap-3 overflow-y-auto pr-1 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="pb-2 mt-6 grid max-h-[520px] grid-cols-1 gap-3 overflow-y-auto pr-1 sm:grid-cols-2 lg:grid-cols-3">
             {agents.map((agent) => (
               <a
                 key={agent.eventId}
