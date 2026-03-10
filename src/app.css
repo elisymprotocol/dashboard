@@ -36,6 +36,18 @@ html {
   animation: soft-blink 2.5s ease-in-out infinite;
 }
 
+@keyframes progress-fill {
+  0% { width: 0%; }
+  15% { width: 30%; }
+  50% { width: 55%; }
+  80% { width: 70%; }
+  100% { width: 80%; }
+}
+
+.animate-progress {
+  animation: progress-fill 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: "Inria Serif", Georgia, "Times New Roman", serif;
 }

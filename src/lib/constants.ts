@@ -9,5 +9,4 @@ export const KIND_JOB_REQUEST = 5100;
 export const KIND_JOB_RESULT = 6100;
 export const KIND_JOB_FEEDBACK = 7000;
 
-export const PROTOCOL_VERSION = "elisym/0.1";
 export const LAMPORTS_PER_SOL = 1_000_000_000;

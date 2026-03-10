@@ -6,9 +6,9 @@ export function Footer() {
   return (
     <footer className="border-t border-gray-100 bg-white py-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm text-gray-500 sm:flex-row">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <img src="/logo-black.png" alt="elisym" className="h-5" />
-          <span>
+          <span className='inline-flex mt-[2px]'>
             on Solana {network === "mainnet" ? "Mainnet" : "Devnet"}
           </span>
         </div>

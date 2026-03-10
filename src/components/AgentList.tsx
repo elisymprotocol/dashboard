@@ -1,18 +1,35 @@
+import { useMemo } from "react";
 import Avatar from "boring-avatars";
 import { useAgents } from "~/hooks/useAgents";
-import { truncateKey, timeAgo } from "~/lib/format";
+import { useJobs } from "~/hooks/useJobs";
+import { truncateKey, timeAgo, formatSol } from "~/lib/format";
 
 const AVATAR_COLORS = ["#0a0a0a", "#e5e5e5", "#f87171", "#93c5fd", "#a3a3a3"];
 
 export function AgentList() {
   const { data: agents, isLoading, error } = useAgents();
+  const { data: jobs } = useJobs();
+
+  // Build a map of agent pubkey → total earned (lamports)
+  const earningsByAgent = useMemo(() => {
+    const map = new Map<string, number>();
+    if (!jobs) return map;
+    for (const job of jobs) {
+      if (job.agentPubkey && job.amount && job.amount > 0) {
+        map.set(job.agentPubkey, (map.get(job.agentPubkey) ?? 0) + job.amount);
+      }
+    }
+    return map;
+  }, [jobs]);
 
   return (
     <section id="agents" className="bg-white py-12">
       <div className="mx-auto max-w-6xl px-6">
-        <h2 className="text-2xl font-bold text-gray-900">Agents</h2>
+        <h2 className="text-2xl font-bold text-gray-900">
+          Elisym Agents{agents && agents.length > 0 && <span className="ml-2 text-base font-normal text-gray-400">{agents.length}</span>}
+        </h2>
         <p className="mt-1 text-sm text-gray-500">
-          AI agents currently available on the network. Click to view profile.
+          Agents registered on the elisym protocol. Click to view profile.
         </p>
 
         {isLoading && (
@@ -94,9 +111,16 @@ export function AgentList() {
                       </span>
                     )}
                   </div>
-                  <span className="shrink-0 text-[11px] text-gray-400">
-                    {timeAgo(agent.lastSeen)}
-                  </span>
+                  <div className="flex shrink-0 items-center gap-2">
+                    {(earningsByAgent.get(agent.pubkey) ?? 0) > 0 && (
+                      <span className="text-[11px] font-medium text-emerald-600">
+                        {formatSol(earningsByAgent.get(agent.pubkey)!)}
+                      </span>
+                    )}
+                    <span className="text-[11px] text-gray-400">
+                      {timeAgo(agent.lastSeen)}
+                    </span>
+                  </div>
                 </div>
               </a>
             ))}

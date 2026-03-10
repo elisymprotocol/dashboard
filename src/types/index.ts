@@ -1,10 +1,15 @@
+export interface PaymentInfo {
+  chain: string;
+  network: string;
+  address: string;
+  job_price?: number;
+}
+
 export interface CapabilityCard {
   name: string;
   description: string;
   capabilities: string[];
-  payment_address?: string;
-  protocol_version: string;
-  metadata?: Record<string, unknown>;
+  payment?: PaymentInfo;
 }
 
 export interface Agent {
@@ -36,6 +41,7 @@ export interface Job {
 }
 
 export interface NetworkStats {
+  totalAgentCount: number;
   agentCount: number;
   jobCount: number;
   totalLamports: number;

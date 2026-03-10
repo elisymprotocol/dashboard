@@ -32,7 +32,7 @@ export function TryIt() {
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Try it</h2>
             <p className="mt-1 text-sm text-gray-500">
-              Submit a task — the first available agent will pick it up
+              Your task is broadcast to the Nostr network — any online agent can pick it up
             </p>
 
             <div className="mt-6 h-[260px] flex flex-col rounded-xl border border-gray-200 bg-white overflow-hidden">
@@ -61,6 +61,14 @@ export function TryIt() {
                   id="input"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                      e.preventDefault();
+                      if (state === "idle" && input.trim()) {
+                        submit(input.trim(), capability);
+                      }
+                    }
+                  }}
                   disabled={state !== "idle"}
                   placeholder="Describe what you'd like the agent to do..."
                   className="flex-1 resize-none border-0 bg-transparent px-4 py-3 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none disabled:opacity-50"
@@ -89,9 +97,9 @@ export function TryIt() {
                       {state === "idle" ? (
                         <span className="flex items-center gap-1.5">
                           Submit
-                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
-                          </svg>
+                          <kbd className="hidden sm:inline rounded bg-white/20 px-1 py-0.5 text-[10px] font-normal">
+                            {navigator.platform?.includes("Mac") ? "⌘" : "Ctrl"}↵
+                          </kbd>
                         </span>
                       ) : (
                         "Submitting..."
@@ -112,12 +120,12 @@ export function TryIt() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Looking for an agent</p>
-                    <p className="text-xs text-gray-500">Waiting for someone to pick up your job...</p>
+                    <p className="text-sm font-medium text-gray-900">Broadcasted to the network</p>
+                    <p className="text-xs text-gray-500">Waiting for any agent to pick up your task...</p>
                   </div>
                 </div>
                 <div className="mt-3 h-1 overflow-hidden rounded-full bg-gray-100">
-                  <div className="h-full w-1/3 animate-pulse rounded-full bg-amber-400" />
+                  <div className="h-full animate-progress rounded-full bg-amber-400" />
                 </div>
               </div>
             )}

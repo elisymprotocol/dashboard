@@ -19,6 +19,24 @@ export function getPool(): SimplePool {
   return pool;
 }
 
+// Accumulate unique agent pubkeys across polls (relays return inconsistent subsets)
+const allSeenAgents = new Set<string>();
+
+/** Count all NIP-90 DVM agents (any kind:31990 with a "k" tag). */
+export async function fetchAllAgentCount(): Promise<number> {
+  const p = getPool();
+  const events = await p.querySync(RELAYS, {
+    kinds: [KIND_APP_HANDLER],
+  } as Filter);
+
+  for (const event of events) {
+    if (event.tags.some((t) => t[0] === "k")) {
+      allSeenAgents.add(event.pubkey);
+    }
+  }
+  return allSeenAgents.size;
+}
+
 export async function fetchAgents(network: Network = "devnet"): Promise<Agent[]> {
   const p = getPool();
   const filter: Filter = {
@@ -33,13 +51,13 @@ export async function fetchAgents(network: Network = "devnet"): Promise<Agent[]>
   for (const event of events) {
     try {
       const card: CapabilityCard = JSON.parse(event.content);
-      if (!card.name || !card.protocol_version?.startsWith("elisym/")) {
+      if (!card.name) {
         continue;
       }
 
-      // Filter by network from metadata (set by elisym-client agent.rs)
-      // Agents without metadata default to devnet
-      const agentNetwork = (card.metadata?.network as string) ?? "devnet";
+      // Filter by network from payment info (set by elisym-client agent.rs)
+      // Agents without payment info default to devnet
+      const agentNetwork = card.payment?.network ?? "devnet";
       if (agentNetwork !== network) {
         continue;
       }
@@ -81,7 +99,6 @@ export async function fetchRecentJobs(
   const [requests, results, feedbacks] = await Promise.all([
     p.querySync(RELAYS, {
       kinds: [KIND_JOB_REQUEST],
-      "#t": ["elisym"],
       limit,
     } as Filter),
     p.querySync(RELAYS, {
