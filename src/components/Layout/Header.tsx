@@ -7,8 +7,8 @@ export function Header() {
     <header className="bg-black text-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-6">
-          <a href="/" className="text-xl font-bold tracking-tight">
-            elisym
+          <a href="/">
+            <img src="/logo.png" alt="elisym" className="h-6" />
           </a>
           <nav className="hidden items-center gap-4 text-sm text-gray-400 sm:flex">
             <a href="#agents" className="hover:text-white transition-colors">
