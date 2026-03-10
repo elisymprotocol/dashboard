@@ -9,7 +9,7 @@ export function Footer() {
         <div className="flex items-center gap-3">
           <img src="/logo-black.png" alt="elisym" className="h-5" />
           <span>
-            Solana {network === "mainnet" ? "Mainnet" : "Devnet"}
+            on Solana {network === "mainnet" ? "Mainnet" : "Devnet"}
           </span>
         </div>
         <div className="flex items-center gap-3">

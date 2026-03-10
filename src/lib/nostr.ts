@@ -123,7 +123,14 @@ export async function fetchRecentJobs(_network: Network = "devnet", limit = 50):
     if (feedback) {
       if (!result) {
         const statusTag = feedback.tags.find((t) => t[0] === "status");
-        if (statusTag?.[1]) status = statusTag[1] as JobStatus;
+        if (statusTag?.[1]) {
+          // Ignore payment-required on free (no-bid) jobs
+          if (statusTag[1] === "payment-required" && !bid) {
+            // keep "processing"
+          } else {
+            status = statusTag[1] as JobStatus;
+          }
+        }
       }
       if (!amount) {
         const amtTag = feedback.tags.find((t) => t[0] === "amount");
