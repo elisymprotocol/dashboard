@@ -30,6 +30,8 @@ export function useTryIt() {
           tags: [
             ["i", input, "text"],
             ["t", capability],
+            ["t", "elisym"],
+            ["output", "text/plain"],
           ],
           content: "",
         },

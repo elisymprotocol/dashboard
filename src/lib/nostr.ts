@@ -81,6 +81,7 @@ export async function fetchRecentJobs(
   const [requests, results, feedbacks] = await Promise.all([
     p.querySync(RELAYS, {
       kinds: [KIND_JOB_REQUEST],
+      "#t": ["elisym"],
       limit,
     } as Filter),
     p.querySync(RELAYS, {
