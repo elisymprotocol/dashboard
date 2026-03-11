@@ -1,5 +1,8 @@
 import { SimplePool, type Filter, type Event } from "nostr-tools";
+import { generateSecretKey, getPublicKey } from "nostr-tools";
 import { nip19 } from "nostr-tools";
+import * as nip17 from "nostr-tools/nip17";
+import * as nip59 from "nostr-tools/nip59";
 import {
   RELAYS,
   KIND_APP_HANDLER,
@@ -9,6 +12,8 @@ import {
 } from "./constants";
 import type { Agent, CapabilityCard, Job, JobStatus } from "~/types";
 import type { Network } from "~/hooks/useNetwork";
+
+const KIND_GIFT_WRAP = 1059;
 
 let pool: SimplePool | null = null;
 
@@ -141,17 +146,36 @@ export async function fetchRecentJobs(
     feedbacks = feedbackArrays.flat();
   }
 
-  // Index results and feedback by request ID
+  // Build a map of request ID → targeted agent pubkey (from #p tag)
+  const targetedAgentByRequest = new Map<string, string>();
+  for (const req of requests) {
+    const pTag = req.tags.find((t) => t[0] === "p");
+    if (pTag?.[1]) targetedAgentByRequest.set(req.id, pTag[1]);
+  }
+
+  // Index results and feedback by request ID, preferring targeted agent
   const resultsByRequest = new Map<string, Event>();
   for (const r of results) {
     const reqId = resolveRequestId(r);
-    if (reqId) resultsByRequest.set(reqId, r);
+    if (!reqId) continue;
+    const existing = resultsByRequest.get(reqId);
+    const targeted = targetedAgentByRequest.get(reqId);
+    // Prefer result from the targeted agent
+    if (!existing || (targeted && r.pubkey === targeted)) {
+      resultsByRequest.set(reqId, r);
+    }
   }
 
   const feedbackByRequest = new Map<string, Event>();
   for (const f of feedbacks) {
     const reqId = resolveRequestId(f);
-    if (reqId) feedbackByRequest.set(reqId, f);
+    if (!reqId) continue;
+    const existing = feedbackByRequest.get(reqId);
+    const targeted = targetedAgentByRequest.get(reqId);
+    // Prefer feedback from the targeted agent
+    if (!existing || (targeted && f.pubkey === targeted)) {
+      feedbackByRequest.set(reqId, f);
+    }
   }
 
   const jobs: Job[] = [];
@@ -173,11 +197,24 @@ export async function fetchRecentJobs(
 
     let status: JobStatus | string = "processing";
     let amount: number | undefined;
+    let txHash: string | undefined;
 
     if (result) {
       status = "success";
       const amtTag = result.tags.find((t) => t[0] === "amount");
       if (amtTag) amount = parseInt(amtTag[1], 10);
+    }
+
+    // Check all feedbacks for this request to find payment-completed with tx hash
+    const allFeedbacksForReq = feedbacks.filter(
+      (f) => resolveRequestId(f) === req.id,
+    );
+    for (const fb of allFeedbacksForReq) {
+      const txTag = fb.tags.find((t) => t[0] === "tx");
+      if (txTag?.[1]) {
+        txHash = txTag[1];
+        break;
+      }
     }
 
     if (feedback) {
@@ -207,6 +244,7 @@ export async function fetchRecentJobs(
       status,
       result: result?.content,
       amount,
+      txHash,
       createdAt: req.created_at,
     });
   }
@@ -237,7 +275,7 @@ export function subscribeToEvents(
   const p = getPool();
   const sub = p.subscribeMany(
     RELAYS,
-    { kinds, since: Math.floor(Date.now() / 1000) } satisfies Filter,
+    { kinds, "#t": ["elisym"], since: Math.floor(Date.now() / 1000) } satisfies Filter,
     {
       onevent: onEvent,
     },
@@ -251,4 +289,47 @@ export function makeNjumpUrl(eventId: string, relays: string[] = RELAYS): string
     relays: relays.slice(0, 2),
   });
   return `https://njump.me/${nevent}`;
+}
+
+/** Ping an agent via NIP-17 DM. Resolves true if online, false if offline. */
+export function pingAgent(agentPubkey: string, timeoutMs = 15_000): Promise<boolean> {
+  return new Promise((resolve) => {
+    const sk = generateSecretKey();
+    const pk = getPublicKey(sk);
+    const p = getPool();
+
+    const nonce = crypto.getRandomValues(new Uint8Array(16))
+      .reduce((s, b) => s + b.toString(16).padStart(2, "0"), "");
+
+    let resolved = false;
+    const done = (online: boolean) => {
+      if (resolved) return;
+      resolved = true;
+      clearTimeout(timer);
+      sub.close();
+      resolve(online);
+    };
+
+    const sub = p.subscribeMany(
+      RELAYS,
+      { kinds: [KIND_GIFT_WRAP], "#p": [pk] } satisfies Filter,
+      {
+        onevent(ev) {
+          try {
+            const rumor = nip59.unwrapEvent(ev, sk);
+            const msg = JSON.parse(rumor.content);
+            if (msg.type === "elisym_pong" && msg.nonce === nonce) {
+              done(true);
+            }
+          } catch { /* not our message */ }
+        },
+      },
+    );
+
+    const pingPayload = JSON.stringify({ type: "elisym_ping", nonce });
+    const wrap = nip17.wrapEvent(sk, { publicKey: agentPubkey }, pingPayload);
+    Promise.any(p.publish(RELAYS, wrap)).catch(() => done(false));
+
+    const timer = setTimeout(() => done(false), timeoutMs);
+  });
 }

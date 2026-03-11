@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { NostrPoolProvider } from "~/hooks/useNostrPool";
 import { NetworkProvider } from "~/hooks/useNetwork";
+import { WalletProvider } from "~/hooks/useWallet";
 import { App } from "./App";
 import "./app.css";
 
@@ -20,11 +21,13 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <NetworkProvider>
-        <NostrPoolProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </NostrPoolProvider>
+        <WalletProvider>
+          <NostrPoolProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </NostrPoolProvider>
+        </WalletProvider>
       </NetworkProvider>
     </QueryClientProvider>
   </StrictMode>,

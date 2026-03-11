@@ -163,18 +163,16 @@ export function TryIt() {
                       <button
                         type="button"
                         onClick={() => sendFeedback(true)}
-                        className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs hover:bg-emerald-50 hover:border-emerald-200 transition-colors"
-                        title="Good result"
+                        className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-700 transition-colors"
                       >
-                        👍
+                        Good
                       </button>
                       <button
                         type="button"
                         onClick={() => sendFeedback(false)}
-                        className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs hover:bg-red-50 hover:border-red-200 transition-colors"
-                        title="Poor result"
+                        className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-red-50 hover:border-red-300 hover:text-red-700 transition-colors"
                       >
-                        👎
+                        Poor
                       </button>
                     </>
                   )}

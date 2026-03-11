@@ -23,6 +23,7 @@ export interface Agent {
 
 export type JobStatus =
   | "payment-required"
+  | "payment-completed"
   | "processing"
   | "error"
   | "success"
@@ -37,6 +38,7 @@ export interface Job {
   status: JobStatus | string;
   result?: string;
   amount?: number;
+  txHash?: string;
   createdAt: number;
 }
 
