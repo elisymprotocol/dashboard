@@ -3,6 +3,7 @@ import Avatar from "boring-avatars";
 import { toast } from "sonner";
 import { useAgents } from "~/hooks/useAgents";
 import { pingAgent } from "~/lib/nostr";
+import { track } from "~/lib/analytics";
 import { truncateKey, timeAgo, formatSol } from "~/lib/format";
 import { HireAgentModal } from "./HireAgentModal";
 import type { Agent } from "~/types";
@@ -16,6 +17,7 @@ export function AgentList() {
   const pingIdRef = useRef(0);
 
   const handleHire = async (agent: Agent) => {
+    track("hire-click", { agent: agent.card.name });
     const id = ++pingIdRef.current;
     setPingingAgent(agent.pubkey);
     try {

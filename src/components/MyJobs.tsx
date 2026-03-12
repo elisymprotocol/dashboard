@@ -5,6 +5,7 @@ import Avatar from "boring-avatars";
 import { useJobHistory } from "~/hooks/useJobHistory";
 import { useNetwork } from "~/hooks/useNetwork";
 import { formatSol, timeAgo, truncateKey } from "~/lib/format";
+import { track } from "~/lib/analytics";
 import { HireAgentModal } from "./HireAgentModal";
 import type { StoredJob } from "~/lib/jobHistory";
 
@@ -185,7 +186,7 @@ export function MyJobs() {
               key={job.jobEventId}
               job={job}
               onRemove={() => removeJob(job.jobEventId)}
-              onClick={() => setOpenJob(job)}
+              onClick={() => { track("my-jobs-open", { status: job.status }); setOpenJob(job); }}
             />
           ))}
         </div>

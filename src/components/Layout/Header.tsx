@@ -2,6 +2,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useNetwork, type Network } from "~/hooks/useNetwork";
 import { truncateKey } from "~/lib/format";
+import { track } from "~/lib/analytics";
 
 export function Header() {
   const { network, setNetwork } = useNetwork();
@@ -60,7 +61,7 @@ export function Header() {
           ) : (
             <button
               type="button"
-              onClick={() => setVisible(true)}
+              onClick={() => { track("wallet-connect"); setVisible(true); }}
               className="flex h-8 items-center gap-2 rounded-lg bg-white/10 px-4 text-sm font-medium text-white transition-colors hover:bg-white/20"
             >
               Connect

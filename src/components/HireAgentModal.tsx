@@ -11,6 +11,7 @@ import { truncateKey, formatSol } from "~/lib/format";
 import type { Agent } from "~/types";
 import type { StoredJob } from "~/lib/jobHistory";
 import { useNetwork } from "~/hooks/useNetwork";
+import { track } from "~/lib/analytics";
 
 const AVATAR_COLORS = ["#0a0a0a", "#e5e5e5", "#f87171", "#93c5fd", "#a3a3a3"];
 
@@ -116,6 +117,7 @@ export function HireAgentModal(props: Props) {
   const feedbackState = isResume ? resumeFeedback : hire.feedbackState;
 
   const sendFeedback = useCallback(async (positive: boolean) => {
+    track("job-feedback", { rating: positive ? "good" : "poor", agent: agentName });
     if (isResume) {
       if (!resumeJob) return;
       setResumeFeedback("sending");
@@ -162,11 +164,13 @@ export function HireAgentModal(props: Props) {
 
   const handleSubmit = () => {
     if (isResume || !input.trim()) return;
+    track("job-submit", { agent: agentName, capability });
     hire.submitJob(input.trim(), capability, props.agent!);
   };
   const handlePay = () => {
     if (isResume) return;
     if (!connected) { setVisible(true); return; }
+    track("job-pay", { agent: agentName });
     hire.pay(props.agent!);
   };
   const handleReset = () => {

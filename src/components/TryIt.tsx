@@ -3,6 +3,7 @@ import { nip19 } from "nostr-tools";
 import { useTryIt } from "~/hooks/useTryIt";
 import { useJobs } from "~/hooks/useJobs";
 import { truncateKey, timeAgo, formatSol, statusColor } from "~/lib/format";
+import { track } from "~/lib/analytics";
 import { makeNjumpUrl } from "~/lib/nostr";
 
 const CAPABILITIES = [
@@ -21,6 +22,7 @@ export function TryIt() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
+    track("try-it-submit", { capability });
     submit(input.trim(), capability);
   };
 
