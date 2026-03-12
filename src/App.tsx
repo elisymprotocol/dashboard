@@ -6,12 +6,7 @@ import { Stats } from "~/components/Stats";
 import { AgentList } from "~/components/AgentList";
 import { MyJobs } from "~/components/MyJobs";
 import { TryIt } from "~/components/TryIt";
-import { useJobSubscription } from "~/hooks/useJobs";
-import { useAgentNotifications } from "~/hooks/useAgents";
-
 export function App() {
-  useJobSubscription();
-  useAgentNotifications();
 
   return (
     <div className="min-h-screen bg-white">
