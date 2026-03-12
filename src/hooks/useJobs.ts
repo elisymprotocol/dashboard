@@ -77,6 +77,7 @@ export function useJobSubscription() {
     }
 
     queryClient.invalidateQueries({ queryKey: ["jobs"], refetchType: "all" });
+    queryClient.invalidateQueries({ queryKey: ["agents"], refetchType: "all" });
 
     if (!initialLoadDone.current) return;
 
