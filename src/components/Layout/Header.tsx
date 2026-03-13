@@ -41,22 +41,14 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-3">
-          {connected && (
-            <a
-              href="#my-jobs"
-              className="text-xs font-medium text-gray-400 hover:text-white transition-colors"
-            >
-              My Jobs
-            </a>
-          )}
           {connected && publicKey ? (
             <button
               type="button"
               onClick={() => disconnect()}
-              className="flex h-8 items-center gap-2 rounded-lg bg-white/10 px-4 text-sm font-medium text-white transition-colors hover:bg-white/20"
+              className="flex h-8 items-center gap-2 rounded-lg bg-white/10 px-3.5 text-sm font-medium text-white transition-colors hover:bg-white/20"
             >
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              {truncateKey(publicKey.toBase58())}
+              {truncateKey(publicKey.toBase58(), 4)}
             </button>
           ) : (
             <button

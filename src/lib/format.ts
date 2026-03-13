@@ -18,9 +18,9 @@ export function timeAgo(unix: number): string {
   return `${days}d ago`;
 }
 
-export function truncateKey(hex: string): string {
+export function truncateKey(hex: string, number = 6): string {
   if (hex.length <= 12) return hex;
-  return `${hex.slice(0, 6)}...${hex.slice(-6)}`;
+  return `${hex.slice(0, number)}...${hex.slice(-number)}`;
 }
 
 export function statusColor(status: string): string {

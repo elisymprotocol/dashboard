@@ -251,7 +251,7 @@ export function TryIt() {
                 {jobs.map((job, i) => (
                   <div
                     key={job.eventId}
-                    className={`flex items-center gap-2.5 px-4 py-2.5 ${
+                    className={`flex items-center gap-2.5 px-4 py-2.5 min-w-[420px] ${
                       i !== 0 ? "border-t border-gray-100" : ""
                     }`}
                   >
