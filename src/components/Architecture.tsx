@@ -247,9 +247,9 @@ function CustomerFlowDiagram() {
       </div>
 
       {/* Visual flow */}
-      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 overflow-x-auto">
         <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Data Flow</h4>
-        <div className="flex flex-wrap items-center justify-center gap-1 text-xs font-medium text-gray-600">
+        <div className="flex items-center gap-1 text-xs font-medium text-gray-600 whitespace-nowrap w-max mx-auto">
           <span className="rounded bg-blue-100 px-2 py-1">Search</span>
           <ArrowRight />
           <span className="rounded bg-blue-100 px-2 py-1">Ping</span>
@@ -289,9 +289,9 @@ function ProviderFlowDiagram() {
       </div>
 
       {/* Visual flow */}
-      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 overflow-x-auto">
         <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Provider Lifecycle</h4>
-        <div className="flex flex-wrap items-center justify-center gap-1 text-xs font-medium text-gray-600">
+        <div className="flex items-center gap-1 text-xs font-medium text-gray-600 whitespace-nowrap w-max mx-auto">
           <span className="rounded bg-emerald-100 px-2 py-1">Init</span>
           <ArrowRight />
           <span className="rounded bg-emerald-100 px-2 py-1">Publish:31990</span>
@@ -328,8 +328,8 @@ function PingDiagram() {
 
       <div>
         <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Ping: Agent Liveness Check</h4>
-        <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+        <div className="bg-gray-50 rounded-xl p-5 border border-gray-100 overflow-x-auto">
+          <div className="flex items-center gap-4 whitespace-nowrap w-max mx-auto">
             <Box title="Customer" color="blue" small items={["Generate random nonce"]} />
             <div className="flex flex-col items-center gap-1">
               <div className="text-[10px] text-gray-500 font-mono">NIP-17 encrypted DM</div>
@@ -347,7 +347,7 @@ function PingDiagram() {
             </div>
             <Box title="Provider" color="emerald" small items={["Echo same nonce"]} />
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-4">
+          <div className="flex items-center gap-4 mt-4 whitespace-nowrap w-max mx-auto">
             <Box title="Customer" color="blue" small items={["Verify nonce match"]} />
             <div className="flex flex-col items-center gap-1">
               <div className="flex items-center gap-1">
@@ -370,9 +370,9 @@ function PingDiagram() {
         </div>
       </div>
 
-      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 overflow-hidden">
         <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">HeartbeatMessage</h4>
-        <pre className="text-xs text-gray-600 font-mono leading-relaxed">
+        <pre className="text-xs text-gray-600 font-mono leading-relaxed whitespace-pre overflow-x-auto max-w-full">
 {`// Ping
 { "msg_type": "elisym_ping", "nonce": "7f3a..." }
 
@@ -400,9 +400,9 @@ function PaymentDiagram() {
       </div>
 
       {/* Payment Request Structure */}
-      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 overflow-hidden">
         <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Solana Payment Request</h4>
-        <pre className="text-xs text-gray-600 font-mono leading-relaxed">
+        <pre className="text-xs text-gray-600 font-mono leading-relaxed whitespace-pre overflow-x-auto max-w-full">
 {`{
   "recipient": "So1anaProviderAddr...",
   "amount": 140000000,        // 0.14 SOL in lamports
@@ -416,9 +416,9 @@ function PaymentDiagram() {
       </div>
 
       {/* Fee breakdown */}
-      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 overflow-x-auto">
         <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Fee Structure (3% / 300 bps)</h4>
-        <div className="flex items-center justify-center gap-2 text-xs font-medium">
+        <div className="flex items-center gap-2 text-xs font-medium whitespace-nowrap w-max mx-auto">
           <div className="rounded-lg bg-blue-100 text-blue-800 px-3 py-2 text-center">
             <div className="text-[10px] text-blue-500">Customer pays</div>
             <div>0.14 SOL</div>
@@ -444,9 +444,9 @@ function PaymentDiagram() {
       </div>
 
       {/* Sequence */}
-      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 overflow-x-auto">
         <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Sequence</h4>
-        <div className="flex flex-wrap items-center justify-center gap-1 text-xs font-medium text-gray-600">
+        <div className="flex items-center gap-1 text-xs font-medium text-gray-600 whitespace-nowrap w-max mx-auto">
           <span className="rounded bg-emerald-100 px-2 py-1">Feedback:7000</span>
           <ArrowRight />
           <span className="rounded bg-blue-100 px-2 py-1">Validate</span>
