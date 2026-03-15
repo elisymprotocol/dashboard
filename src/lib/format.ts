@@ -1,10 +1,22 @@
 import { LAMPORTS_PER_SOL } from "./constants";
 
 export function formatSol(lamports: number): string {
-  const whole = Math.floor(lamports / LAMPORTS_PER_SOL);
-  const frac = Math.floor((lamports % LAMPORTS_PER_SOL) / 1_000_000);
-  if (frac === 0) return `${whole} SOL`;
-  return `${whole}.${String(frac).padStart(3, "0")} SOL`;
+  const sol = lamports / LAMPORTS_PER_SOL;
+  if (sol >= 1_000_000) return `${Math.floor(sol / 1_000_000)}m SOL`;
+  if (sol >= 10_000) return `${Math.floor(sol / 1_000)}k SOL`;
+  return `${compactSol(sol)} SOL`;
+}
+
+/** Format a SOL value to at most 4 visible digits (before + after dot). */
+function compactSol(sol: number): string {
+  if (sol === 0) return "0";
+  const whole = Math.floor(sol);
+  const wholeDigits = whole === 0 ? 1 : String(whole).length;
+  if (wholeDigits >= 4) return String(whole);
+  const fracDigits = 4 - wholeDigits;
+  const formatted = sol.toFixed(fracDigits);
+  // strip trailing zeros after dot, and the dot itself if empty
+  return formatted.replace(/\.?0+$/, "") || "0";
 }
 
 export function timeAgo(unix: number): string {
