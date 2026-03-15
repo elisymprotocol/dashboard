@@ -80,6 +80,7 @@ export function TryIt() {
                   id="input"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  maxLength={2048}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                       e.preventDefault();
@@ -96,7 +97,7 @@ export function TryIt() {
                 {/* Bottom bar */}
                 <div className="flex items-center justify-between border-t border-gray-100 px-4 py-3">
                   <span className="text-xs text-gray-400">
-                    {input.length > 0 ? `${input.length} chars` : "No wallet needed"}
+                    {input.length > 0 ? `${input.length}/2048` : "No wallet needed"}
                   </span>
                   <div className="flex gap-2">
                     {state !== "idle" && (
