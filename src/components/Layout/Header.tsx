@@ -14,7 +14,7 @@ export function Header() {
       {connected && network === "devnet" && (
         <div className="bg-amber-500/90 text-black text-center text-xs py-1.5 font-medium">
           You're on Devnet. Make sure your wallet is also set to Devnet:{" "}
-          <span className="font-normal">Phantom &rarr; Settings &rarr; Developer Settings &rarr; Testnet Mode</span>
+          <span className="font-normal">Settings &rarr; Developer Settings &rarr; Testnet Mode</span>
         </div>
       )}
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
