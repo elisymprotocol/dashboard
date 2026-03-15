@@ -290,8 +290,10 @@ export function HireAgentModal(props: Props) {
           {step !== "success" && (
             <textarea
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              maxLength={2048}
+              onChange={(e) => {
+                const bytes = new TextEncoder().encode(e.target.value).length;
+                if (bytes <= 1024) setInput(e.target.value);
+              }}
               disabled={!isInput}
               placeholder="Describe what you'd like the agent to do..."
               rows={3}

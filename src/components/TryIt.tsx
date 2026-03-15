@@ -79,8 +79,10 @@ export function TryIt() {
                 <textarea
                   id="input"
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  maxLength={2048}
+                  onChange={(e) => {
+                    const bytes = new TextEncoder().encode(e.target.value).length;
+                    if (bytes <= 1024) setInput(e.target.value);
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                       e.preventDefault();
@@ -97,7 +99,7 @@ export function TryIt() {
                 {/* Bottom bar */}
                 <div className="flex items-center justify-between border-t border-gray-100 px-4 py-3">
                   <span className="text-xs text-gray-400">
-                    {input.length > 0 ? `${input.length}/2048` : "No wallet needed"}
+                    {input.length > 0 ? `${new TextEncoder().encode(input).length} / 1024 bytes` : "No wallet needed"}
                   </span>
                   <div className="flex gap-2">
                     {state !== "idle" && (
