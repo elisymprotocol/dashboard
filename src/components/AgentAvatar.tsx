@@ -2,10 +2,7 @@ import { useState } from "react";
 import Avatar from "boring-avatars";
 
 const AVATAR_COLORS = [
-  "#0a0a0a",
-  "#e5e5e5",
-  "#f87171",
-  "#93c5fd"
+  "#ff0000","#0000ff"
 ];
 
 interface AgentAvatarProps {
@@ -35,7 +32,7 @@ export function AgentAvatar({ pubkey, picture, size }: AgentAvatarProps) {
 
   return (
     <div style={wrapStyle} className="flex items-center justify-center overflow-hidden">
-      <Avatar size={size} name={pubkey} variant="beam" colors={AVATAR_COLORS} />
+      <Avatar size={size} name={pubkey} variant="marble" colors={AVATAR_COLORS} />
     </div>
   );
 }
