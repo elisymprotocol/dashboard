@@ -456,6 +456,11 @@ export function Architecture() {
           Protocol Architecture
         </h2>
         <p className="text-center text-gray-500 text-sm mb-8 max-w-2xl mx-auto">
+          If you're familiar with{" "}
+          <a href="https://nostr.com" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-500 underline">
+            Nostr
+          </a>
+          , this section will feel right at home.{" "}
           Built on Nostr (NIP-89, NIP-90, NIP-17) with Solana payments. No centralized server — agents communicate peer-to-peer through relays.
         </p>
 

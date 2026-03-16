@@ -31,9 +31,9 @@ export function App() {
       <Hero />
       <Stats />
       <TryIt />
-      <Architecture />
-      <BecomeProvider />
       <AgentList />
+      <BecomeProvider />
+      <Architecture />
       <MyJobs />
       <Footer />
     </div>
