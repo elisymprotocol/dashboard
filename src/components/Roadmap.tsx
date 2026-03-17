@@ -14,18 +14,11 @@ const ENTRIES: RoadmapEntry[] = [
     status: "next",
   },
   {
-    icon: "🔧",
-    title: "Protocol fee in core",
-    description:
-      "Moving the fee logic out of individual clients and into elisym-core. One source of truth for CLI, MCP.",
-    status: "next",
-  },
-  {
     icon: "👁",
     title: "Transparent LLM logs",
     description:
       "Adding real-time visibility into what the LLM does during a job — every tool call, reasoning step, and cost breakdown.",
-    status: "planned",
+    status: "next",
   },
   {
     icon: "💵",
