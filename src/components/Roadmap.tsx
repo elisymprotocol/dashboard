@@ -1,8 +1,10 @@
+type Category = "distribution" | "features" | "infra";
+
 interface RoadmapEntry {
   title: string;
   description: string;
   icon: string;
-  status: "next" | "planned" | "later";
+  category: Category;
 }
 
 const ENTRIES: RoadmapEntry[] = [
@@ -11,63 +13,63 @@ const ENTRIES: RoadmapEntry[] = [
     title: "OpenClaw SKILL.md",
     description:
       "Writing a skill file so OpenClaw agents can discover and hire elisym providers directly from Telegram. Search, pay SOL, get the result — all in one flow.",
-    status: "next",
-  },
-  {
-    icon: "👁",
-    title: "Transparent LLM logs",
-    description:
-      "Adding real-time visibility into what the LLM does during a job — every tool call, reasoning step, and cost breakdown.",
-    status: "next",
-  },
-  {
-    icon: "💵",
-    title: "USDC payments",
-    description:
-      "Adding USDC as a payment option alongside SOL. Providers pick what they accept, customers pay in what they have.",
-    status: "planned",
-  },
-  {
-    icon: "📁",
-    title: "File inputs & outputs",
-    description:
-      "Adding support for files in jobs — send images, documents, audio.",
-    status: "planned",
+    category: "distribution",
   },
   {
     icon: "🌐",
     title: "Web app for hiring agents",
     description:
       "Building a full browser UI to discover, hire, and pay agents. Wallet connect, job history, live status.",
-    status: "later",
+    category: "distribution",
+  },
+  {
+    icon: "👁",
+    title: "Transparent LLM logs",
+    description:
+      "Adding real-time visibility into what the LLM does during a job — every tool call, reasoning step, and cost breakdown.",
+    category: "features",
+  },
+  {
+    icon: "📁",
+    title: "File inputs & outputs",
+    description:
+      "Adding support for files in jobs — send images, documents, audio.",
+    category: "features",
+  },
+  {
+    icon: "💵",
+    title: "USDC payments",
+    description:
+      "Adding USDC as a payment option alongside SOL. Providers pick what they accept, customers pay in what they have.",
+    category: "infra",
   },
   {
     icon: "🚀",
-    title: "Mainnet",
+    title: "Solana mainnet",
     description:
       "Switching from Solana devnet to mainnet. Real payments, production relays, hardened payment verification.",
-    status: "later",
+    category: "infra",
   },
   {
     icon: "⟠",
     title: "EVM networks",
     description:
       "Adding support for EVM chains — Ethereum, Base, Arbitrum. Pay for agent jobs with ETH and ERC-20 tokens.",
-    status: "later",
+    category: "infra",
   },
 ];
 
-const STATUS_LABELS: Record<RoadmapEntry["status"], { label: string; dot: string; text: string }> = {
-  next: { label: "Up next", dot: "bg-emerald-400", text: "text-emerald-600" },
-  planned: { label: "Planned", dot: "bg-amber-400", text: "text-amber-600" },
-  later: { label: "On the horizon", dot: "bg-violet-400", text: "text-violet-500" },
+const CATEGORY_LABELS: Record<Category, { label: string; dot: string; text: string }> = {
+  distribution: { label: "Distribution", dot: "bg-emerald-400", text: "text-emerald-600" },
+  features: { label: "New features", dot: "bg-amber-400", text: "text-amber-600" },
+  infra: { label: "Payments & infrastructure", dot: "bg-violet-400", text: "text-violet-500" },
 };
 
 export function Roadmap() {
-  const groups: { status: RoadmapEntry["status"]; entries: RoadmapEntry[] }[] = [
-    { status: "next", entries: ENTRIES.filter((e) => e.status === "next") },
-    { status: "planned", entries: ENTRIES.filter((e) => e.status === "planned") },
-    { status: "later", entries: ENTRIES.filter((e) => e.status === "later") },
+  const groups: { category: Category; entries: RoadmapEntry[] }[] = [
+    { category: "distribution", entries: ENTRIES.filter((e) => e.category === "distribution") },
+    { category: "features", entries: ENTRIES.filter((e) => e.category === "features") },
+    { category: "infra", entries: ENTRIES.filter((e) => e.category === "infra") },
   ];
 
   return (
@@ -82,9 +84,9 @@ export function Roadmap() {
 
         <div className="space-y-12">
           {groups.map((group) => {
-            const meta = STATUS_LABELS[group.status];
+            const meta = CATEGORY_LABELS[group.category];
             return (
-              <div key={group.status}>
+              <div key={group.category}>
                 {/* Group label */}
                 <div className="flex items-center gap-2 mb-4 pl-1">
                   <span className={`h-2 w-2 rounded-full ${meta.dot}`} />
