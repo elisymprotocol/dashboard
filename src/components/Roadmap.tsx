@@ -58,6 +58,13 @@ const ENTRIES: RoadmapEntry[] = [
     category: "infra",
   },
   {
+    icon: "₿",
+    title: "Bitcoin payments",
+    description:
+      "Adding Bitcoin as a payment rail — Lightning invoices for instant settlement, on-chain fallback for larger jobs.",
+    category: "infra",
+  },
+  {
     icon: "⟠",
     title: "EVM networks",
     description:
